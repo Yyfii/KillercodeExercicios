@@ -1,67 +1,32 @@
-<!DOCTYPE html>
-<html lang="pt">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>KILLERCODE | KUBERNETES | DESAFIO</title>
-</head>
-<body>
+# KILLERCODE | KUBERNETES | DESAFIO
 
-  <h1>KILLERCODE | KUBERNETES | DESAFIO</h1>
+- :white_check_mark: [**1**. Crie um pod chamado "my-pod" usando uma imagem simples como "nginx" e verifique seu estado com os comandos de monitoramento do Kubernetes.](#1-crie-um-pod-chamado-my-pod-usando-uma-imagem-simples-como-nginx-e-verifique-seu-estado-com-os-comandos-de-monitoramento-do-kubernetes)
+- :white_check_mark: [**2**. Implante um Deployment chamado "my-deployment" com três réplicas de uma aplicação baseada na imagem "httpd". Atualize a imagem do Deployment para uma versão mais recente.](#2-implante-um-deployment-chamado-my-deployment-com-tr%C3%AAs-r%C3%A9plicas-de-uma-aplica%C3%A7%C3%A3o-baseada-na-imagem-httpd-atualize-a-imagem-do-deployment-para-uma-vers%C3%A3o-mais-recente)
+- :white_check_mark: [**3**. Crie um ConfigMap chamado "app-config" com uma variável de configuração personalizada. Monte o ConfigMap em um pod e verifique se o valor foi aplicado corretamente.](#3-crie-um-configmap-chamado-app-config-com-uma-vari%C3%A1vel-de-configura%C3%A7%C3%A3o-personalizada-monte-o-configmap-em-um-pod-e-verifique-se-o-valor-foi-aplicado-correta...)
+- :white_check_mark: [**4**. Crie um Secret chamado "app-secret" contendo informações sensíveis. Injete o Secret como uma variável de ambiente em um pod e teste se está acessível.](#4-crie-um-secret-chamado-app-secret-contendo-informa%C3%A7%C3%B5es-sens%C3%ADveis-injete-o-secret-como-uma-vari%C3%A1vel-de-ambiente-em-um-pod-e-teste-se-est%C3%A1-acess%C3%ADvel)
+- :white_check_mark: [**5**. Configure um PersistentVolume de 1Gi de armazenamento local e vincule-o a um PersistentVolumeClaim. Monte o volume em um pod e salve arquivos para verificar a persistência.](#5-configure-um-persistentvolume-de-1gi-de-armazenamento-local-e-vincule-o-a-um-persistentvolumeclaim-monte-o-volume-em-um-pod-e-salve-arquivos-para-verificar-a-persist%C3%AAncia)
+- :white_check_mark: [**6**. Crie um serviço do tipo ClusterIP para um Deployment chamado "backend" e teste a conectividade interna entre pods usando o nome do serviço.](#6-crie-um-servi%C3%A7o-do-tipo-clusterip-para-um-deployment-chamado-backend-e-teste-a-conectividade-interna-entre-pods-usando-o-nome-do-servi%C3%A7o)
+- :white_check_mark: [**7**. Implante um Job chamado "batch-job" que execute um comando simples e termine. Verifique os logs do Job para confirmar sua execução.](#7-implante-um-job-chamado-batch-job-que-execute-um-comando-simples-e-termine-verifique-os-logs-do-job-para-confirmar-sua-execu%C3%A7%C3%A3o)
+- :white_check_mark: [**8**. Crie um Horizontal Pod Autoscaler para um Deployment chamado "hpa-deployment" e configure-o para escalar com base no uso de CPU. Aumente a carga e observe o escalonamento.](#8-crie-um-horizontal-pod-autoscaler-para-um-deployment-chamado-hpa-deployment-e-configure-o-para-escalar-com-base-no-uso-de-cpu-aumente-a-carga-e-observe-o-escalonamento)
+- :white_check_mark: [**9**. Crie um serviço do tipo NodePort para expor externamente um Deployment chamado "webapp". Acesse o serviço usando o endereço IP do Minikube e a porta atribuída.](#9-crie-um-servi%C3%A7o-do-tipo-nodeport-para-expor-externamente-um-deployment-chamado-webapp-acesse-o-servi%C3%A7o-usando-o-endere%C3%A7o-ip-do-minikube-e-a-porta-atribu%C3%ADda)
+- :white_check_mark: [**10**. Crie um pod chamado "restart-pod" com a política de reinício configurada como "OnFailure". Provoque uma falha no pod e observe seu comportamento.](#10-crie-um-pod-chamado-restart-pod-com-a-pol%C3%ADtica-de-rein%C3%ADcio-configurada-como-onfailure-provoque-uma-falha-no-pod-e-observe-seu-comportamento)
 
-  <ul>
-    <li><a href="#section1" style="text-decoration: none;">:white_check_mark: 1. Crie um pod chamado "my-pod" usando uma imagem simples como "nginx" e verifique seu estado com os comandos de monitoramento do Kubernetes.</a></li>
-    <li><a href="#section2">:white_check_mark: 2. Implante um Deployment chamado "my-deployment" com três réplicas de uma aplicação baseada na imagem "httpd". Atualize a imagem do Deployment para uma versão mais recente.</a></li>
-    <li><a href="#section3">:white_check_mark: 3. Crie um ConfigMap chamado "app-config" com uma variável de configuração personalizada. Monte o ConfigMap em um pod e verifique se o valor foi aplicado corretamente.</a></li>
-    <li><a href="#section4">:white_check_mark: 4. Crie um Secret chamado "app-secret" contendo informações sensíveis. Injete o Secret como uma variável de ambiente em um pod e teste se está acessível.</a></li>
-    <li><a href="#section5">:white_check_mark: 5. Configure um PersistentVolume de 1Gi de armazenamento local e vincule-o a um PersistentVolumeClaim. Monte o volume em um pod e salve arquivos para verificar a persistência.</a></li>
-    <li><a href="#section6">:white_check_mark: 6. Crie um serviço do tipo ClusterIP para um Deployment chamado "backend" e teste a conectividade interna entre pods usando o nome do serviço.</a></li>
-    <li><a href="#section7">:white_check_mark: 7. Implante um Job chamado "batch-job" que execute um comando simples e termine. Verifique os logs do Job para confirmar sua execução.</a></li>
-    <li><a href="#section8">:white_check_mark: 8. Crie um Horizontal Pod Autoscaler para um Deployment chamado "hpa-deployment" e configure-o para escalar com base no uso de CPU. Aumente a carga e observe o escalonamento.</a></li>
-    <li><a href="#section9">:white_check_mark: 9. Crie um serviço do tipo NodePort para expor externamente um Deployment chamado "webapp". Acesse o serviço usando o endereço IP do Minikube e a porta atribuída.</a></li>
-    <li><a href="#section10">:white_check_mark: 10. Crie um pod chamado "restart-pod" com a política de reinício configurada como "OnFailure". Provoque uma falha no pod e observe seu comportamento.</a></li>
-  </ul>
+### [1. Crie um pod chamado "my-pod" usando uma imagem simples como "nginx" e verifique seu estado com os comandos de monitoramento do Kubernetes.](#1-crie-um-pod-chamado-my-pod-usando-uma-imagem-simples-como-nginx-e-verifique-seu-estado-com-os-comandos-de-monitoramento-do-kubernetes)
 
-  <div id="section1">
-    <h2>1.  Crie um pod chamado "my-pod" usando uma imagem simples como "nginx" e verifique seu estado com os comandos de monitoramento do Kubernetes.</h2>
-    <p>Conteúdo da seção 1...</p>
-  </div>
-  <div id="section2">
-    <h2>2. Implante um Deployment chamado "my-deployment" com três réplicas de uma aplicação baseada na imagem "httpd". Atualize a imagem do Deployment para uma versão mais recente.</h2>
-    <p>Conteúdo da seção 2...</p>
-  </div>
-  <div id="section3">
-    <h2>3. Crie um ConfigMap chamado "app-config" com uma variável de configuração personalizada. Monte o ConfigMap em um pod e verifique se o valor foi aplicado corretamente.</h2>
-    <p>Conteúdo da seção 3...</p>
-  </div>
-  <div id="section4">
-    <h2>4. Crie um Secret chamado "app-secret" contendo informações sensíveis. Injete o Secret como uma variável de ambiente em um pod e teste se está acessível.</h2>
-    <p>Conteúdo da seção 4...</p>
-  </div>
-  <div id="section5">
-    <h2>5. Configure um PersistentVolume de 1Gi de armazenamento local e vincule-o a um PersistentVolumeClaim. Monte o volume em um pod e salve arquivos para verificar a persistência.</h2>
-    <p>Conteúdo da seção 5...</p>
-  </div>
-  <div id="section6">
-    <h2>6. Crie um serviço do tipo ClusterIP para um Deployment chamado "backend" e teste a conectividade interna entre pods usando o nome do serviço.</h2>
-    <p>Conteúdo da seção 6...</p>
-  </div>
-  <div id="section7">
-    <h2>7. Implante um Job chamado "batch-job" que execute um comando simples e termine. Verifique os logs do Job para confirmar sua execução.</h2>
-    <p>Conteúdo da seção 7...</p>
-  </div>
-  <div id="section8">
-    <h2>8. Crie um Horizontal Pod Autoscaler para um Deployment chamado "hpa-deployment" e configure-o para escalar com base no uso de CPU. Aumente a carga e observe o escalonamento.</h2>
-    <p>Conteúdo da seção 8...</p>
-  </div>
-  <div id="section9">
-    <h2>9. Crie um serviço do tipo NodePort para expor externamente um Deployment chamado "webapp". Acesse o serviço usando o endereço IP do Minikube e a porta atribuída.</h2>
-    <p>Conteúdo da seção 9...</p>
-  </div>
-  <div id="section10">
-    <h2>10. Crie um pod chamado "restart-pod" com a política de reinício configurada como "OnFailure". Provoque uma falha no pod e observe seu comportamento.</h2>
-    <p>Conteúdo da seção 10...</p>
-  </div>
+### [2. Implante um Deployment chamado "my-deployment" com três réplicas de uma aplicação baseada na imagem "httpd". Atualize a imagem do Deployment para uma versão mais recente.](#2-implante-um-deployment-chamado-my-deployment-com-tr%C3%AAs-r%C3%A9plicas-de-uma-aplica%C3%A7%C3%A3o-baseada-na-imagem-httpd-atualize-a-imagem-do-deployment-para-uma-vers%C3%A3o-mais-recente)
 
-</body>
-</html>
+### [3. Crie um ConfigMap chamado "app-config" com uma variável de configuração personalizada. Monte o ConfigMap em um pod e verifique se o valor foi aplicado corretamente.](#3-crie-um-configmap-chamado-app-config-com-uma-vari%C3%A1vel-de-configura%C3%A7%C3%A3o-personalizada-monte-o-configmap-em-um-pod-e-verifique-se-o-valor-foi-aplicado-correta...)
+
+### [4. Crie um Secret chamado "app-secret" contendo informações sensíveis. Injete o Secret como uma variável de ambiente em um pod e teste se está acessível.](#4-crie-um-secret-chamado-app-secret-contendo-informa%C3%A7%C3%B5es-sens%C3%ADveis-injete-o-secret-como-uma-vari%C3%A1vel-de-ambiente-em-um-pod-e-teste-se-est%C3%A1-acess%C3%ADvel)
+
+### [5. Configure um PersistentVolume de 1Gi de armazenamento local e vincule-o a um PersistentVolumeClaim. Monte o volume em um pod e salve arquivos para verificar a persistência.](#5-configure-um-persistentvolume-de-1gi-de-armazenamento-local-e-vincule-o-a-um-persistentvolumeclaim-monte-o-volume-em-um-pod-e-salve-arquivos-para-verificar-a-persist%C3%AAncia)
+
+### [6. Crie um serviço do tipo ClusterIP para um Deployment chamado "backend" e teste a conectividade interna entre pods usando o nome do serviço.](#6-crie-um-servi%C3%A7o-do-tipo-clusterip-para-um-deployment-chamado-backend-e-teste-a-conectividade-interna-entre-pods-usando-o-nome-do-servi%C3%A7o)
+
+### [7. Implante um Job chamado "batch-job" que execute um comando simples e termine. Verifique os logs do Job para confirmar sua execução.](#7-implante-um-job-chamado-batch-job-que-execute-um-comando-simples-e-termine-verifique-os-logs-do-job-para-confirmar-sua-execu%C3%A7%C3%A3o)
+
+### [8. Crie um Horizontal Pod Autoscaler para um Deployment chamado "hpa-deployment" e configure-o para escalar com base no uso de CPU. Aumente a carga e observe o escalonamento.](#8-crie-um-horizontal-pod-autoscaler-para-um-deployment-chamado-hpa-deployment-e-configure-o-para-escalar-com-base-no-uso-de-cpu-aumente-a-carga-e-observe-o-escalonamento)
+
+### [9. Crie um serviço do tipo NodePort para expor externamente um Deployment chamado "webapp". Acesse o serviço usando o endereço IP do Minikube e a porta atribuída.](#9-crie-um-servi%C3%A7o-do-tipo-nodeport-para-expor-externamente-um-deployment-chamado-webapp-acesse-o-servi%C3%A7o-usando-o-endere%C3%A7o-ip-do-minikube-e-a-porta-atribu%C3%ADda)
+
+### [10. Crie um pod chamado "restart-pod" com a política de reinício configurada como "OnFailure". Provoque uma falha no pod e observe seu comportamento.](#10-crie-um-pod-chamado-restart-pod-com-a-pol%C3%ADtica-de-rein%C3%ADcio-configurada-como-onfailure-provoque-uma-falha-no-pod-e-observe-seu-comportamento)
