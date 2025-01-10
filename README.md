@@ -9,7 +9,6 @@
       color: inherit; /* Remove a cor padrão de link */
       text-decoration: none; /* Remove o sublinhado */
     }
-
     ul li a:hover {
       text-decoration: underline; /* Adiciona sublinhado quando o mouse passar por cima */
     }
@@ -21,7 +20,7 @@
   <h1>KILLERCODE | KUBERNETES | DESAFIO</h1>
 
   <ul>
-    <li><a href="#section1">1. Crie um pod chamado "my-pod" usando uma imagem simples como "nginx" e verifique seu estado com os comandos de monitoramento do Kubernetes.</a></li>
+    <li><a href="#section1">:white_check_mark: 1. Crie um pod chamado "my-pod" usando uma imagem simples como "nginx" e verifique seu estado com os comandos de monitoramento do Kubernetes.</a></li>
     <li><a href="#section2">2. Implante um Deployment chamado "my-deployment" com três réplicas de uma aplicação baseada na imagem "httpd". Atualize a imagem do Deployment para uma versão mais recente.</a></li>
     <li><a href="#section3">3. Crie um ConfigMap chamado "app-config" com uma variável de configuração personalizada. Monte o ConfigMap em um pod e verifique se o valor foi aplicado corretamente.</a></li>
     <li><a href="#section4">4. Crie um Secret chamado "app-secret" contendo informações sensíveis. Injete o Secret como uma variável de ambiente em um pod e teste se está acessível.</a></li>
