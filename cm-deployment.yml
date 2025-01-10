@@ -1,0 +1,27 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: cm-deployment
+  labels:
+    app: cm-deployment
+spec:
+  replicas: 2
+  selector:
+    matchLabels: #match selector wich connects the pods to this deployment resource
+      app: cm-pod
+  template: #defines the pod that it will be deploying.
+    metadata:
+      labels:
+        app: cm-pod
+    spec:
+      containers:
+        - name: cm-pod
+          image: httpd:2
+          env:
+            - name: app-config
+              valueFrom:
+                configMapKeyRef:
+                  name: app-config
+                  key: configValue
+          ports:
+            - containerPort: 80
