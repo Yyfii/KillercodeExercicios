@@ -11,7 +11,126 @@
 - :white_check_mark: [**9**. Crie um serviço do tipo NodePort para expor externamente um Deployment chamado "webapp". Acesse o serviço usando o endereço IP do Minikube e a porta atribuída.](#9-crie-um-servi%C3%A7o-do-tipo-nodeport-para-expor-externamente-um-deployment-chamado-webapp-acesse-o-servi%C3%A7o-usando-o-endere%C3%A7o-ip-do-minikube-e-a-porta-atribu%C3%ADda)
 - :white_check_mark: [**10**. Crie um pod chamado "restart-pod" com a política de reinício configurada como "OnFailure". Provoque uma falha no pod e observe seu comportamento.](#10-crie-um-pod-chamado-restart-pod-com-a-pol%C3%ADtica-de-rein%C3%ADcio-configurada-como-onfailure-provoque-uma-falha-no-pod-e-observe-seu-comportamento)
 
+### Instalando o Minikube no Windows (opcional)
+
+- requisitos : Kubectl
+  Entre com o PowerShell no modo administrador:
+
+```
+>Invoke-WebRequest -Uri "https://github.com/kubernetes/minikube/releases/latest/download/minikube-windows-amd64.exe" -OutFile "minikube.exe"
+> move .\minikube.exe C:\Windows\System32
+> minikube version
+> minikube delete
+> minikube start
+> minikube status
+>kubectl get nodes﻿
+NAME       STATUS   ROLES           AGE   VERSION
+minikube   Ready    control-plane   64s   v1.31.0﻿
+> minikube dashboard
+
+#Manage your minikube cluster
+
+> minikube pause
+
+> minikube unpause﻿
+```
+
 ### [1. Crie um pod chamado "my-pod" usando uma imagem simples como "nginx" e verifique seu estado com os comandos de monitoramento do Kubernetes.]
+
+```bash
+> code first-pod.yaml
+```
+
+```yaml
+apiVersion: v1
+kind: Pod
+metadata:
+  name: my-pod
+  labels:
+    app: my-pod
+spec:
+  containers:
+    - name: my-pod
+      image: nginx:latest
+```
+
+```bash
+> kubectl get all
+
+> kubectl apply -f first-pod.yaml
+
+> kubectl get all
+
+> minikube ip
+```
+
+> Pods are not intended to be visible outside the cluster!By default, the Pod is only accessible by its internal IP address within the Kubernetes cluster. To make the hello-node Container accessible from outside the Kubernetes virtual network, you have to expose the Pod as a Kubernetes Service.
+
+```bash
+> kubectl describe pod my-pod
+> kubectl exec my-pod -- ls
+> kubectl exec my-pod -- curl localhost
+> kubectl -it exec my-pod -- sh
+> curl localhost
+> exit
+> kubectl logs my-pod
+```
+
+##### Extra(opcional): Um Pod é acessível apenas dentro do cluster, por isso termos um componente chamado de Service que ajuda a expor grupos de pods na internet.
+
+```bash
+> code first-pod.yaml﻿
+```
+
+```yaml
+apiVersion: v1
+kind: Pod
+metadata:
+  name: my-pod
+  labels:
+    app: my-pod
+spec:
+  containers:
+    - name: my-pod
+      image: nginx:latest
+```
+
+```bash
+> code my-first-service.yaml
+```
+
+```yaml
+apiVersion: v1
+kind: Service
+metadata:
+  name: my-service
+spec:
+  selector:
+    app: my-pod #the same label used in the pod
+  ports:
+    - name: http
+      port: 80
+      nodePort: 30090
+  type: NodePort
+```
+
+```bash
+>kubectl apply -f first-pod.yaml
+
+>kubectl apply -f my-first-service.yaml
+
+> kubectl get all
+
+> minikube service my-service
+```
+
+> Uma página vai se abrir no seu navegador.
+
+```bash
+>kubectl delete po my-pod
+
+>kubectl delete svc my-service﻿
+```
 
 ### [2. Implante um Deployment chamado "my-deployment" com três réplicas de uma aplicação baseada na imagem "httpd". Atualize a imagem do Deployment para uma versão mais recente.]
 
