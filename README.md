@@ -541,6 +541,189 @@ Hello from the kubernetes cluster!
 
 ### [8. Crie um Horizontal Pod Autoscaler para um Deployment chamado "hpa-deployment" e configure-o para escalar com base no uso de CPU. Aumente a carga e observe o escalonamento.]
 
+```bash
+> kubectl get nodes
+> code deploy.yaml
+```
+
+```yaml
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: php-apache
+spec:
+  selector:
+    matchLabels:
+      run: php-apache
+  template:
+    metadata:
+      labels:
+        run: php-apache
+    spec:
+      containers:
+        - name: php-apache
+          image: registry.k8s.io/hpa-example
+          ports:
+            - containerPort: 80
+          resources:
+            limits:
+              cpu: 500m
+            requests:
+              cpu: 200m
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: php-apache
+  labels:
+    run: php-apache
+spec:
+  ports:
+    - port: 80
+  selector:
+    run: php-apache
+```
+
+```bash
+> kubectl apply -f deploy.yaml
+> kubectl get po
+#create the hpa object
+> kubectl apply -f https://github.com/kubernetes-sigs/metrics-server/releases/latest/download/components.yaml
+> kubectl edit deployment metrics-server -n kube-system
+
+containers:
+- args:
+  - --cert-dir=/tmp
+  - --secure-port=10250
+  - --kubelet-preferred-address-types=InternalIP,Hostname,ExternalIP
+  - --kubelet-use-node-status-port
+  - --metric-resolution=15s
+  - --kubelet-insecure-tls
+
+> kubectl get pods -n kube-system
+> kubectl top nodes
+> kubectl top pods
+> kubectl get hpa
+> kubectl autoscale deploy php-apache --cpu-percent=50 --min=1 --max=10
+> kubectl delete hpa php-apache
+>kubectl get hpa
+#simulate the load in this application
+#open other terminal window
+> kubectl run -i --tty load-generator --rm --image=busybox:1.28 --restart=Never -- /bin/sh -c "while sleep 0.01; do wget -q -O- http://php-apache; done"
+```
+
+> Em outra janela cmd:
+
+```bash
+>kubectl get hpa --watch
+
+> kubectl get po
+
+C:\Development\Tools\KillercodeExercicios>kubectl get hpa --watch
+
+NAME         REFERENCE               TARGETS         MINPODS   MAXPODS   REPLICAS   AGE
+
+php-apache   Deployment/php-apache   cpu: 119%/50%   1         10        1          16m
+
+C:\Development\Tools\KillercodeExercicios>kubectl get po
+
+NAME                         READY   STATUS    RESTARTS   AGE
+
+load-generator               1/1     Running   0          32s
+
+php-apache-d87b7ff46-2rq99   1/1     Running   0          18s
+
+php-apache-d87b7ff46-5fspk   1/1     Running   0          18s
+
+php-apache-d87b7ff46-5pg48   1/1     Running   0          26m
+
+php-apache-d87b7ff46-tns5l   1/1     Running   0          3s
+
+Ctrl + c na outra janela
+
+> kubectl delete -f deploy.yaml
+
+> kubectl delete hpa php-apache
+
+> kubectl delete po load-generator
+```
+
 ### [9. Crie um serviço do tipo NodePort para expor externamente um Deployment chamado "webapp". Acesse o serviço usando o endereço IP do Minikube e a porta atribuída.]
 
+```bash
+> code first-pod.yaml
+```
+
+```yaml
+apiVersion: v1
+kind: Pod
+metadata:
+  name: webapp
+  labels:
+    app: webapp
+spec:
+  containers:
+    - name: webapp
+      image: nginx:latest
+```
+
+```bash
+> code my-first-service.yaml
+```
+
+```yaml
+apiVersion: v1
+kind: Service
+metadata:
+  name: my-service
+spec:
+  selector:
+    app: webapp #the same label used in the pod
+  ports:
+    - name: http
+      port: 80
+      nodePort: 30090
+  type: NodePort
+```
+
+```bash
+> kubectl apply -f first-pod.yaml
+> kubectl apply -f my-first-service.yaml
+> kubectl get all
+> minikube service webapp
+```
+
+> A page will be opened in the browser:ex: http://127.0.0.1:62753/
+
+- Usando o minkube no windows, esse foi o primeiro problema que enfrentei. Por que a rede é limitada ao usar o driver do docker no windows, e o NodeIP não pode ser acessado diretamente, como por exemplo http:<minikubei_p>:30080.
+
 ### [10. Crie um pod chamado "restart-pod" com a política de reinício configurada como "OnFailure". Provoque uma falha no pod e observe seu comportamento.]
+
+```bash
+> code restart.yaml
+```
+
+```yaml
+apiVersion: v1
+kind: Pod
+metadata:
+  name: restart-pod
+spec:
+  containers:
+    - name: restart-pod
+      image: busybox
+      command: ["sh", "-c", "exit 1"]
+  restartPolicy: OnFailure
+```
+
+```bash
+>kubectl get po
+
+#O pod vai continuar reiniciando
+
+NAME                      READY   STATUS             RESTARTS      AGE
+
+restart-pod               0/1     CrashLoopBackOff   3 (24s ago)   77s
+
+>kubectl delete po restart-pod
+```

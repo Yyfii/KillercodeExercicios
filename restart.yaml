@@ -1,0 +1,10 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: restart-pod
+spec:
+  containers:
+    - name: restart-pod
+      image: busybox
+      command: ["sh", "-c", "exit 1"]
+  restartPolicy: OnFailure
