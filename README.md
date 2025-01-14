@@ -1,5 +1,24 @@
 # KILLERCODE | KUBERNETES | DESAFIO
 
+<p align="center">
+  <img src="hello.png" alt="Project Header" width="1000">
+</p>
+
+[![Docker](https://img.shields.io/badge/Docker-2496ED?style=for-the-badge&logo=docker&logoColor=white)](https://www.docker.com/)
+[![Nginx](https://img.shields.io/badge/Nginx-009639?style=for-the-badge&logo=nginx&logoColor=white)](https://nginx.org/)
+[![Kubernetes](https://img.shields.io/badge/Kubernetes-326CE5?style=for-the-badge&logo=kubernetes&logoColor=white)](https://kubernetes.io/)
+
+![alt text](container_hello_diagram.jpeg)
+
+Requisitos:
+
+- Docker desktop instalado.
+  Run : `docker --version`
+- Kubernetes ativado.
+  Run : `kubectl get all`
+- Minikube ativado.
+  Run : `minikube status`
+
 - :white_check_mark: [**1**. Crie um pod chamado "my-pod" usando uma imagem simples como "nginx" e verifique seu estado com os comandos de monitoramento do Kubernetes.](#1-crie-um-pod-chamado-my-pod-usando-uma-imagem-simples-como-nginx-e-verifique-seu-estado-com-os-comandos-de-monitoramento-do-kubernetes)
 - :white_check_mark: [**2**. Implante um Deployment chamado "my-deployment" com três réplicas de uma aplicação baseada na imagem "httpd". Atualize a imagem do Deployment para uma versão mais recente.](#2-implante-um-deployment-chamado-my-deployment-com-tr%C3%AAs-r%C3%A9plicas-de-uma-aplica%C3%A7%C3%A3o-baseada-na-imagem-httpd-atualize-a-imagem-do-deployment-para-uma-vers%C3%A3o-mais-recente)
 - :white_check_mark: [**3**. Crie um ConfigMap chamado "app-config" com uma variável de configuração personalizada. Monte o ConfigMap em um pod e verifique se o valor foi aplicado corretamente.](#3-crie-um-configmap-chamado-app-config-com-uma-vari%C3%A1vel-de-configura%C3%A7%C3%A3o-personalizada-monte-o-configmap-em-um-pod-e-verifique-se-o-valor-foi-aplicado-correta...)
